@@ -6,7 +6,7 @@
 
 The DAG uploads local job assets to S3, validates raw order event quality on EMR
 Serverless, bootstraps Apache Paimon tables, then loads sample raw order events
-into the latest-state tables.
+into the latest-state tables and exports dashboard-ready serving views.
 
 ## Runtime Dependencies
 
@@ -45,6 +45,7 @@ upload_assets
   -> validate_order_events
   -> bootstrap_tables
   -> load_order_events
+  -> export_dashboard_views
 ```
 
 ## Notes

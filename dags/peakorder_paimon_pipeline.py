@@ -29,7 +29,9 @@ JOB_PREFIX = f"{PROJECT_NAME}-{ENVIRONMENT}"
 BOOTSTRAP_SCRIPT_KEY = "jobs/bootstrap_tables.py"
 LOAD_EVENTS_SCRIPT_KEY = "jobs/load_order_events.py"
 VALIDATE_EVENTS_SCRIPT_KEY = "jobs/validate_order_events.py"
+EXPORT_DASHBOARD_SCRIPT_KEY = "jobs/export_dashboard_views.py"
 SAMPLE_EVENTS_KEY = "orders/order_events.jsonl"
+DASHBOARD_EXPORT_PREFIX = os.getenv("DASHBOARD_EXPORT_PREFIX", f"s3://{LAKEHOUSE_BUCKET}/exports/dashboard")
 
 
 def s3_client():
@@ -144,6 +146,7 @@ def peakorder_paimon_pipeline():
             "bootstrap_uri": bootstrap_uri,
             "load_events_uri": load_events_uri,
             "validate_events_uri": validate_events_uri,
+            "export_dashboard_uri": export_dashboard_uri,
             "raw_events_uri": raw_events_uri,
         }
 
@@ -181,10 +184,28 @@ def peakorder_paimon_pipeline():
         )
         return wait_for_job(job_run_id)
 
+
+    @task
+    def export_dashboard_views(assets: dict[str, str], _: str) -> str:
+        job_run_id = submit_spark_job(
+            job_name=f"{JOB_PREFIX}-export-dashboard-views",
+            entry_point=assets["export_dashboard_uri"],
+            arguments=[
+                "--warehouse",
+                PAIMON_WAREHOUSE,
+                "--database",
+                GLUE_DATABASE,
+                "--output",
+                DASHBOARD_EXPORT_PREFIX,
+            ],
+        )
+        return wait_for_job(job_run_id)
+
     uploaded_assets = upload_assets()
     validation_state = validate_order_events(uploaded_assets)
     bootstrap_state = bootstrap_tables(uploaded_assets, validation_state)
-    load_order_events(uploaded_assets, bootstrap_state)
+    load_state = load_order_events(uploaded_assets, bootstrap_state)
+    export_dashboard_views(uploaded_assets, load_state)
 
 
 peakorder_paimon_pipeline()

@@ -17,5 +17,7 @@ jobs:
   bootstrap_tables_entry_point: "s3://your-lakehouse-bucket/jobs/bootstrap_tables.py"
   load_order_events_entry_point: "s3://your-lakehouse-bucket/jobs/load_order_events.py"
   validate_order_events_entry_point: "s3://your-lakehouse-bucket/jobs/validate_order_events.py"
+  export_dashboard_views_entry_point: "s3://your-lakehouse-bucket/jobs/export_dashboard_views.py"
+  dashboard_export_prefix: "s3://your-lakehouse-bucket/exports/dashboard"
   max_order_event_error_ratio: 0.0
   raw_order_events_input: "s3://your-raw-bucket/orders/"
