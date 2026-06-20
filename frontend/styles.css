@@ -214,6 +214,88 @@ h2 {
   padding: 18px;
 }
 
+.kpi-panel[hidden] {
+  display: none;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kpi-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #fbfdff;
+  padding: 14px;
+}
+
+.kpi-card.watch {
+  border-left-color: var(--warning);
+}
+
+.kpi-card.critical {
+  border-left-color: var(--danger);
+}
+
+.kpi-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.kpi-card-top span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.kpi-card-top strong {
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1;
+  text-align: right;
+}
+
+.kpi-card p {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.kpi-card dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.kpi-card dl div {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.kpi-card dt {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.kpi-card dd {
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.35;
+  margin: 0;
+}
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -354,6 +436,7 @@ td {
   }
 
   .metrics-grid,
+  .kpi-grid,
   .insight-strip,
   .two-column {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -372,6 +455,7 @@ td {
   }
 
   .metrics-grid,
+  .kpi-grid,
   .insight-strip,
   .two-column {
     grid-template-columns: 1fr;

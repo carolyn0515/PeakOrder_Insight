@@ -6,6 +6,13 @@ const currency = new Intl.NumberFormat("ko-KR", {
 });
 
 const peakHours = new Set(["12:00", "13:00", "18:00", "19:00"]);
+const kpiCriteria = {
+  pressureWatch: 2,
+  pressureCritical: 3.5,
+  peakShareWatch: 60,
+  alertWatch: 8,
+  freshnessTargetMs: 3000,
+};
 let currentView = "pm";
 let latestData = null;
 
@@ -131,6 +138,108 @@ function metricCard(label, value) {
   article.className = "metric";
   article.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
   return article;
+}
+
+function maxBy(rows, selector) {
+  return rows.reduce((best, row) => (selector(row) > selector(best) ? row : best), rows[0]);
+}
+
+function calculatePmKpis(data) {
+  const summary = data.summary;
+  const peakShare = (summary.peak_orders / summary.total_orders) * 100;
+  const peakRows = data.store_pressure.filter((row) => peakHours.has(row.hour));
+  const maxPressure = maxBy(peakRows, (row) => row.pressure_ratio);
+  const topProduct = maxBy(data.top_products, (row) => row.gross_sales);
+  const estimatedFreshnessMs = data.live?.latency_ms ?? 1337;
+  const revenuePerOrder = summary.total_sales / summary.total_orders;
+  const peakRevenueEstimate = summary.peak_orders * revenuePerOrder;
+
+  return [
+    {
+      label: "Peak demand concentration",
+      value: `${Math.round(peakShare)}%`,
+      basis: `Peak-window orders / total orders = ${formatter.format(summary.peak_orders)} / ${formatter.format(summary.total_orders)}.`,
+      threshold: `>= ${kpiCriteria.peakShareWatch}% means lunch/dinner dominate the business day.`,
+      decision: peakShare >= kpiCriteria.peakShareWatch ? "Plan capacity around fixed peak windows." : "Monitor as distributed demand.",
+      state: peakShare >= kpiCriteria.peakShareWatch ? "watch" : "ok",
+    },
+    {
+      label: "Store pressure ceiling",
+      value: `${maxPressure.pressure_ratio}x`,
+      basis: `${maxPressure.store_id} at ${maxPressure.hour}: ${formatter.format(maxPressure.orders)} orders vs ${formatter.format(Math.round(maxPressure.baseline_orders))} baseline.`,
+      threshold: `${kpiCriteria.pressureWatch}x = intervention, ${kpiCriteria.pressureCritical}x = critical staffing/inventory risk.`,
+      decision: maxPressure.pressure_ratio >= kpiCriteria.pressureCritical ? "Escalate store-level operations before the next peak." : "Keep store on watchlist.",
+      state: maxPressure.pressure_ratio >= kpiCriteria.pressureCritical ? "critical" : "watch",
+    },
+    {
+      label: "Peak revenue at stake",
+      value: currency.format(peakRevenueEstimate),
+      basis: `Estimated from average order value ${currency.format(revenuePerOrder)} x peak orders.`,
+      threshold: "Use when deciding whether a peak fix is worth PM or ops investment.",
+      decision: "Prioritize fixes that protect conversion in peak windows.",
+      state: "ok",
+    },
+    {
+      label: "Demand driver concentration",
+      value: topProduct.product_id,
+      basis: `${formatter.format(topProduct.units_sold)} units and ${currency.format(topProduct.gross_sales)} gross sales.`,
+      threshold: "Top SKU drives product, stockout, and bundle decisions.",
+      decision: "Protect inventory and test peak bundle placement.",
+      state: "ok",
+    },
+    {
+      label: "Alert burden",
+      value: formatter.format(summary.alert_count),
+      basis: "Peak alerts are store-hour threshold crossings from the pressure detector.",
+      threshold: `>= ${kpiCriteria.alertWatch} alerts means PM needs an action queue, not passive monitoring.`,
+      decision: summary.alert_count >= kpiCriteria.alertWatch ? "Group alerts by store and owner for immediate follow-up." : "Keep alerts in watch mode.",
+      state: summary.alert_count >= kpiCriteria.alertWatch ? "watch" : "ok",
+    },
+    {
+      label: "Decision freshness",
+      value: `${formatter.format(Math.round(estimatedFreshnessMs))} ms`,
+      basis: "Producer-to-reader latency from Kinesis replay evidence.",
+      threshold: `< ${formatter.format(kpiCriteria.freshnessTargetMs)} ms supports live PM intervention during a short peak window.`,
+      decision: estimatedFreshnessMs <= kpiCriteria.freshnessTargetMs ? "Use live dashboard during lunch/dinner response." : "Treat data as post-peak analysis.",
+      state: estimatedFreshnessMs <= kpiCriteria.freshnessTargetMs ? "ok" : "watch",
+    },
+  ];
+}
+
+function renderPmKpis(data, viewKey) {
+  const panel = document.getElementById("pm-kpi-panel");
+  const grid = document.getElementById("pm-kpi-grid");
+  if (!panel || !grid) return;
+
+  panel.hidden = viewKey !== "pm";
+  if (viewKey !== "pm") {
+    grid.innerHTML = "";
+    return;
+  }
+
+  grid.innerHTML = "";
+  calculatePmKpis(data).forEach((kpi) => {
+    const item = document.createElement("article");
+    item.className = `kpi-card ${kpi.state}`;
+    item.innerHTML = `
+      <div class="kpi-card-top">
+        <span>${kpi.label}</span>
+        <strong>${kpi.value}</strong>
+      </div>
+      <p>${kpi.basis}</p>
+      <dl>
+        <div>
+          <dt>Decision rule</dt>
+          <dd>${kpi.threshold}</dd>
+        </div>
+        <div>
+          <dt>PM action</dt>
+          <dd>${kpi.decision}</dd>
+        </div>
+      </dl>
+    `;
+    grid.appendChild(item);
+  });
 }
 
 function renderMetrics(summary, viewKey) {
@@ -316,6 +425,7 @@ function renderView(data, viewKey) {
   setText("bottom-right-copy", view.bottomRightCopy);
 
   renderMetrics(data.summary, viewKey);
+  renderPmKpis(data, viewKey);
   renderHourlyChart(data.hourly_orders);
   renderRankList("left-panel-list", viewKey === "data-engineer" ? servingRows() : pressureRows(data));
   renderDetailTable(data.alerts, viewKey);
