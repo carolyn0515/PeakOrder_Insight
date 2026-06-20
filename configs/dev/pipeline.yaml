@@ -15,10 +15,10 @@ tables:
   peak_order_alerts: "paimon.default.peak_order_alerts"
 
 generation:
-  base_orders_per_hour: 1000
-  peak_multiplier: 8
-  expected_total_events: 48330
-  expected_peak_events: 32000
+  base_orders_per_hour: 5000
+  peak_multiplier: 10
+  expected_total_events: 281660
+  expected_peak_events: 200000
 
 jobs:
   paimon_spark_package: "org.apache.paimon:paimon-spark-3.5:1.0.1"

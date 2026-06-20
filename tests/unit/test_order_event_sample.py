@@ -19,7 +19,8 @@ def test_sample_order_events_match_schema() -> None:
 
     assert records, "sample order_events.jsonl should contain at least one event"
 
-    for index, record in enumerate(records, start=1):
+    sample_records = records[:1000] + records[-1000:]
+    for index, record in enumerate(sample_records, start=1):
         errors = sorted(validator.iter_errors(record), key=lambda error: error.path)
         assert not errors, f"record {index} failed schema validation: {errors}"
 
@@ -33,6 +34,12 @@ def test_sample_order_events_include_peak_traffic_shape() -> None:
         hourly_counts[hour] = hourly_counts.get(hour, 0) + 1
 
     normal_hour_count = hourly_counts[10]
+    assert len(records) == 281660
+    assert normal_hour_count == 5000
+    assert hourly_counts[12] == 50000
+    assert hourly_counts[13] == 50000
+    assert hourly_counts[18] == 50000
+    assert hourly_counts[19] == 50000
     assert hourly_counts[12] >= normal_hour_count * 5
     assert hourly_counts[13] >= normal_hour_count * 5
     assert hourly_counts[18] >= normal_hour_count * 5

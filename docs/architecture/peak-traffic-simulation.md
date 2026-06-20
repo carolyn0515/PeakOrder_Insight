@@ -17,11 +17,11 @@ Default generation parameters:
 
 ```bash
 python3 src/ingestion/generate_peak_order_events.py \
-  --base-orders-per-hour 1000 \
-  --peak-multiplier 8
+  --base-orders-per-hour 5000 \
+  --peak-multiplier 10
 ```
 
-This produces 8,000 orders per peak hour, 1,000 orders per normal daytime hour, and 48,330 total events for the sample business day.
+This produces 50,000 orders per peak hour, 5,000 orders per normal daytime hour, and 281,660 total events for the sample business day.
 
 ## Detection Logic
 

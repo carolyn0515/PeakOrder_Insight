@@ -35,8 +35,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", default="data/sample/order_events.jsonl", help="Output JSONL path.")
     parser.add_argument("--date", default="2026-06-20", help="Business date in YYYY-MM-DD.")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for deterministic samples.")
-    parser.add_argument("--base-orders-per-hour", type=int, default=1000, help="Average normal hourly order volume.")
-    parser.add_argument("--peak-multiplier", type=int, default=8, help="Multiplier applied during peak hours.")
+    parser.add_argument("--base-orders-per-hour", type=int, default=5000, help="Average normal hourly order volume.")
+    parser.add_argument("--peak-multiplier", type=int, default=10, help="Multiplier applied during peak hours.")
     return parser.parse_args()
 
 
