@@ -6,7 +6,8 @@ data "aws_iam_policy_document" "pipeline_assume_role" {
       type = "Service"
       identifiers = [
         "glue.amazonaws.com",
-        "elasticmapreduce.amazonaws.com"
+        "elasticmapreduce.amazonaws.com",
+        "emr-serverless.amazonaws.com"
       ]
     }
   }

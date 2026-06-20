@@ -18,6 +18,16 @@ output "glue_database_name" {
   value       = module.glue.database_name
 }
 
+output "emr_serverless_application_id" {
+  description = "EMR Serverless Spark application ID."
+  value       = module.emr.application_id
+}
+
+output "emr_serverless_application_arn" {
+  description = "EMR Serverless Spark application ARN."
+  value       = module.emr.application_arn
+}
+
 output "pipeline_role_arn" {
   description = "IAM role ARN for pipeline jobs."
   value       = module.iam.pipeline_role_arn

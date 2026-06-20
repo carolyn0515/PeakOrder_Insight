@@ -41,6 +41,20 @@ module "glue" {
   pipeline_role_arn = module.iam.pipeline_role_arn
 }
 
+module "emr" {
+  source = "../../modules/emr"
+
+  name_prefix = local.name_prefix
+  vpc_id      = module.network.vpc_id
+  subnet_ids  = module.network.private_subnet_ids
+
+  release_label        = var.emr_release_label
+  maximum_cpu          = var.emr_maximum_cpu
+  maximum_memory       = var.emr_maximum_memory
+  maximum_disk         = var.emr_maximum_disk
+  idle_timeout_minutes = var.emr_idle_timeout_minutes
+}
+
 module "observability" {
   source = "../../modules/observability"
 

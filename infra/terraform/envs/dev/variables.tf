@@ -46,6 +46,36 @@ variable "glue_database_name" {
   default     = "peakorder_insight_dev"
 }
 
+variable "emr_release_label" {
+  description = "EMR release label for the Serverless Spark application."
+  type        = string
+  default     = "emr-7.2.0"
+}
+
+variable "emr_maximum_cpu" {
+  description = "Maximum CPU capacity for the EMR Serverless application."
+  type        = string
+  default     = "8 vCPU"
+}
+
+variable "emr_maximum_memory" {
+  description = "Maximum memory capacity for the EMR Serverless application."
+  type        = string
+  default     = "24 GB"
+}
+
+variable "emr_maximum_disk" {
+  description = "Maximum disk capacity for the EMR Serverless application."
+  type        = string
+  default     = "100 GB"
+}
+
+variable "emr_idle_timeout_minutes" {
+  description = "Minutes before an idle EMR Serverless application auto-stops."
+  type        = number
+  default     = 15
+}
+
 variable "log_retention_days" {
   description = "CloudWatch log retention period."
   type        = number
