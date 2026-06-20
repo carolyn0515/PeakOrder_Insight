@@ -17,42 +17,42 @@
             <span>Insight</span>
           </div>
         </div>
-        <nav>
-          <a class="active" href="#overview">Overview</a>
-          <a href="#pressure">Pressure</a>
-          <a href="#alerts">Alerts</a>
-          <a href="#products">Products</a>
+        <nav id="role-nav" aria-label="Role dashboards">
+          <button class="active" type="button" data-view="pm">PM</button>
+          <button type="button" data-view="data-engineer">Data Eng</button>
+          <button type="button" data-view="ml-engineer">ML Eng</button>
+          <button type="button" data-view="sre">SRE</button>
+          <button type="button" data-view="leadership">Leadership</button>
         </nav>
       </aside>
 
       <main>
         <header class="topbar">
           <div>
-            <p class="eyebrow">AWS Lakehouse Operations</p>
-            <h1>Peak traffic monitor</h1>
+            <p class="eyebrow" id="role-eyebrow">AWS Lakehouse Operations</p>
+            <h1 id="role-title">Peak traffic monitor</h1>
+            <p class="role-summary" id="role-summary"></p>
           </div>
           <div class="status-pill">
             <span></span>
-            Sample export loaded
+            Near-real-time export
           </div>
         </header>
 
-        <section id="overview" class="metrics-grid" aria-label="Key metrics">
-          <article class="metric">
-            <span>Total orders</span>
-            <strong id="total-orders">-</strong>
+        <section id="role-metrics" class="metrics-grid" aria-label="Role metrics"></section>
+
+        <section class="insight-strip" aria-label="Role insight">
+          <article>
+            <span>Primary question</span>
+            <strong id="primary-question"></strong>
           </article>
-          <article class="metric">
-            <span>Peak-window orders</span>
-            <strong id="peak-orders">-</strong>
+          <article>
+            <span>Decision signal</span>
+            <strong id="decision-signal"></strong>
           </article>
-          <article class="metric">
-            <span>Gross sales</span>
-            <strong id="gross-sales">-</strong>
-          </article>
-          <article class="metric">
-            <span>Peak alerts</span>
-            <strong id="alert-count">-</strong>
+          <article>
+            <span>AWS data path</span>
+            <strong id="aws-path"></strong>
           </article>
         </section>
 
@@ -60,66 +60,58 @@
           <div class="panel-header">
             <div>
               <h2 id="hourly-title">Hourly order volume</h2>
-              <p>Lunch and dinner windows should stand out against baseline demand.</p>
+              <p id="hourly-copy">Lunch and dinner windows should stand out against baseline demand.</p>
             </div>
           </div>
           <div id="hourly-chart" class="bar-chart"></div>
         </section>
 
-        <section id="pressure" class="two-column">
+        <section class="two-column">
           <article class="panel">
             <div class="panel-header">
               <div>
-                <h2>Store pressure</h2>
-                <p>Highest order-pressure ratios by store and hour.</p>
+                <h2 id="left-panel-title">Store pressure</h2>
+                <p id="left-panel-copy">Highest order-pressure ratios by store and hour.</p>
               </div>
             </div>
-            <div id="pressure-list" class="rank-list"></div>
+            <div id="left-panel-list" class="rank-list"></div>
           </article>
 
-          <article id="alerts" class="panel">
+          <article class="panel">
             <div class="panel-header">
               <div>
-                <h2>Peak alerts</h2>
-                <p>Threshold crossings emitted by the detection job.</p>
+                <h2 id="right-panel-title">Peak alerts</h2>
+                <p id="right-panel-copy">Threshold crossings emitted by the detection job.</p>
               </div>
             </div>
             <div class="table-wrap">
               <table>
-                <thead>
-                  <tr>
-                    <th>Store</th>
-                    <th>Hour</th>
-                    <th>Orders</th>
-                    <th>Ratio</th>
-                    <th>Severity</th>
-                  </tr>
-                </thead>
-                <tbody id="alert-table"></tbody>
+                <thead id="detail-head"></thead>
+                <tbody id="detail-table"></tbody>
               </table>
             </div>
           </article>
         </section>
 
-        <section id="products" class="two-column">
+        <section class="two-column">
           <article class="panel">
             <div class="panel-header">
               <div>
-                <h2>Product leaderboard</h2>
-                <p>Top sellers across the simulated business day.</p>
+                <h2 id="bottom-left-title">Product leaderboard</h2>
+                <p id="bottom-left-copy">Top sellers across the simulated business day.</p>
               </div>
             </div>
-            <div id="product-list" class="rank-list"></div>
+            <div id="bottom-left-list" class="rank-list"></div>
           </article>
 
           <article class="panel">
             <div class="panel-header">
               <div>
-                <h2>Store totals</h2>
-                <p>Order distribution by store.</p>
+                <h2 id="bottom-right-title">Role action queue</h2>
+                <p id="bottom-right-copy">Recommended follow-up for the selected role.</p>
               </div>
             </div>
-            <div id="store-list" class="rank-list"></div>
+            <div id="action-list" class="rank-list"></div>
           </article>
         </section>
       </main>
