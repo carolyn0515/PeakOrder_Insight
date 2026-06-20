@@ -26,7 +26,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "-private-rt"
+    Name = "${var.name_prefix}-private-rt"
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_route_table_association" "private" {
 
 resource "aws_vpc_endpoint" "s3" {
   vpc_id          = aws_vpc.this.id
-  service_name    = "com.amazonaws..s3"
+  service_name    = "com.amazonaws.${data.aws_region.current.name}.s3"
   route_table_ids = [aws_route_table.private.id]
 
   tags = {
