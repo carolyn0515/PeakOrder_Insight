@@ -1,0 +1,9 @@
+terraform {
+  backend "s3" {
+    bucket         = "your-terraform-state-bucket"
+    key            = "peakorder-insight/dev/terraform.tfstate"
+    region         = "ap-northeast-2"
+    dynamodb_table = "your-terraform-lock-table"
+    encrypt        = true
+  }
+}

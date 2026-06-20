@@ -1,0 +1,7 @@
+project_name = "peakorder-insight"
+environment  = "dev"
+aws_region   = "ap-northeast-2"
+
+# Bucket names must be globally unique. Leave these as null to use generated names.
+raw_bucket_name       = null
+lakehouse_bucket_name = null
