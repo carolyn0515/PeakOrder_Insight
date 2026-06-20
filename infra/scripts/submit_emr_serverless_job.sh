@@ -11,6 +11,7 @@ Usage:
     --entry-point S3_SCRIPT_URI \
     --warehouse S3_PAIMON_WAREHOUSE \
     --database GLUE_DATABASE \
+    [--region AWS_REGION] \
     [--input S3_INPUT_PATH]
 
 The Paimon runtime package is supplied with spark.jars.packages. Override
@@ -25,6 +26,7 @@ ENTRY_POINT=""
 WAREHOUSE=""
 DATABASE=""
 INPUT_PATH=""
+REGION="${AWS_REGION:-ap-northeast-2}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -34,6 +36,7 @@ while [[ $# -gt 0 ]]; do
     --entry-point) ENTRY_POINT="$2"; shift 2 ;;
     --warehouse) WAREHOUSE="$2"; shift 2 ;;
     --database) DATABASE="$2"; shift 2 ;;
+    --region) REGION="$2"; shift 2 ;;
     --input) INPUT_PATH="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
@@ -46,6 +49,7 @@ if [[ -z "$APPLICATION_ID" || -z "$EXECUTION_ROLE_ARN" || -z "$JOB_NAME" || -z "
 fi
 
 PAIMON_SPARK_PACKAGE="${PAIMON_SPARK_PACKAGE:-org.apache.paimon:paimon-spark-3.5:1.0.1}"
+SPARK_RESOURCE_PARAMETERS="${SPARK_RESOURCE_PARAMETERS:---conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=1 --conf spark.executor.cores=1 --conf spark.executor.memory=2g --conf spark.driver.cores=1 --conf spark.driver.memory=2g}"
 
 ARGS=(--warehouse "$WAREHOUSE" --database "$DATABASE")
 if [[ -n "$INPUT_PATH" ]]; then
@@ -53,12 +57,14 @@ if [[ -n "$INPUT_PATH" ]]; then
 fi
 
 aws emr-serverless start-job-run \
+  --region "$REGION" \
   --application-id "$APPLICATION_ID" \
   --execution-role-arn "$EXECUTION_ROLE_ARN" \
   --name "$JOB_NAME" \
   --job-driver "$(jq -n \
     --arg entryPoint "$ENTRY_POINT" \
     --arg packages "$PAIMON_SPARK_PACKAGE" \
+    --arg resourceParams "$SPARK_RESOURCE_PARAMETERS" \
     --argjson args "$(printf '%s\n' "${ARGS[@]}" | jq -R . | jq -s .)" \
-    '{sparkSubmit: {entryPoint: $entryPoint, entryPointArguments: $args, sparkSubmitParameters: ("--conf spark.jars.packages=" + $packages)}}')" \
+    '{sparkSubmit: {entryPoint: $entryPoint, entryPointArguments: $args, sparkSubmitParameters: ("--conf spark.jars.packages=" + $packages + " " + $resourceParams)}}')" \
   --configuration-overrides '{"monitoringConfiguration":{"cloudWatchLoggingConfiguration":{"enabled":true}}}'

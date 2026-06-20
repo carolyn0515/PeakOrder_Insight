@@ -44,6 +44,7 @@ aws s3 cp "$REPO_ROOT/src/paimon/load_order_events.py" "s3://$LAKEHOUSE_BUCKET/j
 aws s3 cp "$REPO_ROOT/src/quality/validate_order_events.py" "s3://$LAKEHOUSE_BUCKET/jobs/validate_order_events.py"
 aws s3 cp "$REPO_ROOT/src/paimon/detect_peak_pressure.py" "s3://$LAKEHOUSE_BUCKET/jobs/detect_peak_pressure.py"
 aws s3 cp "$REPO_ROOT/src/serving/export_dashboard_views.py" "s3://$LAKEHOUSE_BUCKET/jobs/export_dashboard_views.py"
+aws s3 cp "$REPO_ROOT/src/serving/materialize_lakehouse_views.py" "s3://$LAKEHOUSE_BUCKET/jobs/materialize_lakehouse_views.py"
 aws s3 cp "$REPO_ROOT/data/sample/order_events.jsonl" "s3://$RAW_BUCKET/orders/order_events.jsonl"
 
 echo "Uploaded Paimon job assets and sample order events."

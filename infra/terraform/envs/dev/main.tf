@@ -36,10 +36,12 @@ module "iam" {
 module "glue" {
   source = "../../modules/glue"
 
-  name_prefix       = local.name_prefix
-  database_name     = var.glue_database_name
-  paimon_warehouse  = module.storage.paimon_warehouse_uri
-  pipeline_role_arn = module.iam.pipeline_role_arn
+  name_prefix           = local.name_prefix
+  database_name         = var.glue_database_name
+  paimon_warehouse      = module.storage.paimon_warehouse_uri
+  raw_bucket_name       = module.storage.raw_bucket_name
+  lakehouse_bucket_name = module.storage.lakehouse_bucket_name
+  pipeline_role_arn     = module.iam.pipeline_role_arn
 }
 
 module "emr" {
@@ -69,4 +71,5 @@ module "observability" {
 
   name_prefix        = local.name_prefix
   log_retention_days = var.log_retention_days
+  order_stream_name  = module.streaming.order_events_stream_name
 }

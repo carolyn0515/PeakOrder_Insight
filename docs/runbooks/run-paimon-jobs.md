@@ -53,3 +53,40 @@ infra/scripts/submit_emr_serverless_job.sh \
   --database peakorder_insight_dev \
   --input s3://YOUR_RAW_BUCKET/orders/
 ```
+
+## 5. Materialize Lakehouse Evidence Without Paimon Runtime
+
+If the EMR job cannot download the Paimon runtime package from Maven because
+the application runs in private subnets, use the dependency-light Spark job
+below to create report-ready JSON and Parquet exports first.
+
+```bash
+aws emr-serverless start-job-run \
+  --region ap-northeast-2 \
+  --application-id YOUR_APPLICATION_ID \
+  --execution-role-arn YOUR_PIPELINE_ROLE_ARN \
+  --name materialize-lakehouse-views-small-executor \
+  --job-driver '{
+    "sparkSubmit": {
+      "entryPoint": "s3://YOUR_LAKEHOUSE_BUCKET/jobs/materialize_lakehouse_views.py",
+      "entryPointArguments": [
+        "--input", "s3://YOUR_RAW_BUCKET/orders/",
+        "--output", "s3://YOUR_LAKEHOUSE_BUCKET/exports",
+        "--peak-threshold", "1.8",
+        "--min-orders", "100"
+      ],
+      "sparkSubmitParameters": "--conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=1 --conf spark.executor.cores=1 --conf spark.executor.memory=2g --conf spark.driver.cores=1 --conf spark.driver.memory=2g"
+    }
+  }' \
+  --configuration-overrides '{"monitoringConfiguration":{"cloudWatchLoggingConfiguration":{"enabled":true}}}'
+```
+
+Expected CloudWatch stdout evidence:
+
+```text
+materialized_raw_event_rows=281660
+materialized_order_item_rows=399846
+materialized_product_demand_rows=24
+materialized_pressure_rows=96
+materialized_alert_rows=16
+```
