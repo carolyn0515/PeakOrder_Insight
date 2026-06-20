@@ -11,3 +11,9 @@ tables:
   orders_latest: "paimon.default.orders_latest"
   order_items_latest: "paimon.default.order_items_latest"
   product_demand_daily: "paimon.default.product_demand_daily"
+
+jobs:
+  paimon_spark_package: "org.apache.paimon:paimon-spark-3.5:1.0.1"
+  bootstrap_tables_entry_point: "s3://your-lakehouse-bucket/jobs/bootstrap_tables.py"
+  load_order_events_entry_point: "s3://your-lakehouse-bucket/jobs/load_order_events.py"
+  raw_order_events_input: "s3://your-raw-bucket/orders/"
