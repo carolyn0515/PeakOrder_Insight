@@ -6,6 +6,8 @@ const currency = new Intl.NumberFormat("ko-KR", {
 });
 
 const peakHours = new Set(["12:00", "13:00", "18:00", "19:00"]);
+let currentView = "pm";
+let latestData = null;
 
 const roleViews = {
   pm: {
@@ -143,7 +145,7 @@ function renderMetrics(summary, viewKey) {
       ["Raw events", formatter.format(summary.total_orders)],
       ["Paimon pressure rows", "96"],
       ["Serving views", "5"],
-      ["Quality threshold", "0% errors"],
+      ["Stream mode", latestData?.live ? "Live replay" : "Static export"],
     ],
     "ml-engineer": [
       ["Feature rows", "96 store-hours"],
@@ -293,6 +295,8 @@ function renderActions(view) {
 }
 
 function renderView(data, viewKey) {
+  latestData = data;
+  currentView = viewKey;
   const view = roleViews[viewKey];
 
   setText("role-eyebrow", view.eyebrow);
@@ -317,6 +321,7 @@ function renderView(data, viewKey) {
   renderDetailTable(data.alerts, viewKey);
   renderRankList("bottom-left-list", viewKey === "data-engineer" ? storeRows(data) : productRows(data));
   renderActions(view);
+  renderLiveStatus(data);
 }
 
 function bindNavigation(data) {
@@ -324,17 +329,65 @@ function bindNavigation(data) {
     button.addEventListener("click", () => {
       document.querySelectorAll("#role-nav button").forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
-      renderView(data, button.dataset.view);
+      renderView(latestData || data, button.dataset.view);
     });
   });
 }
 
+function renderLiveStatus(data) {
+  const pill = document.querySelector(".status-pill");
+  if (!pill) return;
+
+  if (!data.live) {
+    pill.innerHTML = "<span></span> Static export loaded";
+    return;
+  }
+
+  const percent = Math.round(data.live.progress * 100);
+  pill.innerHTML = `<span></span> Live replay ${percent}% - ${formatter.format(data.live.processed_events)} events`;
+}
+
+async function fetchJson(path) {
+  const response = await fetch(path, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`${path} returned ${response.status}`);
+  }
+  return response.json();
+}
+
+async function loadInitialData() {
+  try {
+    return {
+      data: await fetchJson("/api/live-dashboard"),
+      liveApiAvailable: true,
+    };
+  } catch {
+    return {
+      data: await fetchJson("./data/dashboard.json"),
+      liveApiAvailable: false,
+    };
+  }
+}
+
+function startLivePolling() {
+  window.setInterval(async () => {
+    try {
+      const data = await fetchJson("/api/live-dashboard");
+      renderView(data, currentView);
+    } catch {
+      // Static hosting mode does not expose the live API.
+    }
+  }, 2000);
+}
+
 async function main() {
-  const response = await fetch("./data/dashboard.json");
-  const data = await response.json();
+  const { data, liveApiAvailable } = await loadInitialData();
 
   bindNavigation(data);
   renderView(data, "pm");
+  if (liveApiAvailable) {
+    startLivePolling();
+  }
 }
 
 main().catch((error) => {

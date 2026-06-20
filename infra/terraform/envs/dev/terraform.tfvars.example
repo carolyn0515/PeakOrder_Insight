@@ -12,3 +12,6 @@ emr_maximum_cpu            = "8 vCPU"
 emr_maximum_memory         = "24 GB"
 emr_maximum_disk           = "100 GB"
 emr_idle_timeout_minutes   = 15
+
+kinesis_shard_count     = 2
+kinesis_retention_hours = 24

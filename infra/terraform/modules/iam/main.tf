@@ -64,6 +64,20 @@ data "aws_iam_policy_document" "pipeline" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "kinesis:DescribeStream",
+      "kinesis:DescribeStreamSummary",
+      "kinesis:GetRecords",
+      "kinesis:GetShardIterator",
+      "kinesis:ListShards",
+      "kinesis:PutRecord",
+      "kinesis:PutRecords"
+    ]
+
+    resources = [var.order_stream_arn]
+  }
 }
 
 resource "aws_iam_policy" "pipeline" {

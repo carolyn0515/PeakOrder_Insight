@@ -76,6 +76,18 @@ variable "emr_idle_timeout_minutes" {
   default     = 15
 }
 
+variable "kinesis_shard_count" {
+  description = "Number of Kinesis shards for order event streaming."
+  type        = number
+  default     = 2
+}
+
+variable "kinesis_retention_hours" {
+  description = "Kinesis stream retention period in hours."
+  type        = number
+  default     = 24
+}
+
 variable "log_retention_days" {
   description = "CloudWatch log retention period."
   type        = number

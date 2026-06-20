@@ -30,6 +30,7 @@ module "iam" {
   name_prefix          = local.name_prefix
   raw_bucket_arn       = module.storage.raw_bucket_arn
   lakehouse_bucket_arn = module.storage.lakehouse_bucket_arn
+  order_stream_arn     = module.streaming.order_events_stream_arn
 }
 
 module "glue" {
@@ -53,6 +54,14 @@ module "emr" {
   maximum_memory       = var.emr_maximum_memory
   maximum_disk         = var.emr_maximum_disk
   idle_timeout_minutes = var.emr_idle_timeout_minutes
+}
+
+module "streaming" {
+  source = "../../modules/streaming"
+
+  name_prefix     = local.name_prefix
+  shard_count     = var.kinesis_shard_count
+  retention_hours = var.kinesis_retention_hours
 }
 
 module "observability" {

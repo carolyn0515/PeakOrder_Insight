@@ -28,6 +28,16 @@ output "emr_serverless_application_arn" {
   value       = module.emr.application_arn
 }
 
+output "order_events_stream_name" {
+  description = "Kinesis order events stream name."
+  value       = module.streaming.order_events_stream_name
+}
+
+output "order_events_stream_arn" {
+  description = "Kinesis order events stream ARN."
+  value       = module.streaming.order_events_stream_arn
+}
+
 output "pipeline_role_arn" {
   description = "IAM role ARN for pipeline jobs."
   value       = module.iam.pipeline_role_arn

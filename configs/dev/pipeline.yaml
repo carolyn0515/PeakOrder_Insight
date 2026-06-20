@@ -14,6 +14,11 @@ tables:
   store_order_pressure_hourly: "paimon.default.store_order_pressure_hourly"
   peak_order_alerts: "paimon.default.peak_order_alerts"
 
+streaming:
+  kinesis_stream_name: "peakorder-insight-dev-order-events"
+  local_live_api: "http://127.0.0.1:8010/api/live-dashboard"
+  frontend_poll_interval_seconds: 2
+
 generation:
   base_orders_per_hour: 5000
   peak_multiplier: 10

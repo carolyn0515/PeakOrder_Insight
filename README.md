@@ -57,6 +57,13 @@ python3 -m http.server 8000
 # open http://localhost:8000/frontend/
 ```
 
+Run the live replay dashboard locally:
+
+```bash
+make live-dashboard
+# open http://127.0.0.1:8010/frontend/
+```
+
 ## Core Design Position
 
 S3 is the raw source of truth. Apache Paimon is the mutable lakehouse state layer
