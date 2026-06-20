@@ -22,6 +22,28 @@ tests/       Unit and integration tests
 assets/      Diagrams, screenshots, and portfolio images
 ```
 
+## Local Validation
+
+Install development checks when needed:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Run the local validation suite:
+
+```bash
+make test
+```
+
+Use narrower targets while iterating:
+
+```bash
+make test-python
+make test-scripts
+make test-terraform
+```
+
 ## Core Design Position
 
 S3 is the raw source of truth. Apache Paimon is the mutable lakehouse state layer
