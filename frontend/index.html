@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PeakOrder Insight Dashboard</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Dashboard navigation">
+        <div class="brand">
+          <span class="brand-mark">PI</span>
+          <div>
+            <strong>PeakOrder</strong>
+            <span>Insight</span>
+          </div>
+        </div>
+        <nav>
+          <a class="active" href="#overview">Overview</a>
+          <a href="#pressure">Pressure</a>
+          <a href="#alerts">Alerts</a>
+          <a href="#products">Products</a>
+        </nav>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">AWS Lakehouse Operations</p>
+            <h1>Peak traffic monitor</h1>
+          </div>
+          <div class="status-pill">
+            <span></span>
+            Sample export loaded
+          </div>
+        </header>
+
+        <section id="overview" class="metrics-grid" aria-label="Key metrics">
+          <article class="metric">
+            <span>Total orders</span>
+            <strong id="total-orders">-</strong>
+          </article>
+          <article class="metric">
+            <span>Peak-window orders</span>
+            <strong id="peak-orders">-</strong>
+          </article>
+          <article class="metric">
+            <span>Gross sales</span>
+            <strong id="gross-sales">-</strong>
+          </article>
+          <article class="metric">
+            <span>Peak alerts</span>
+            <strong id="alert-count">-</strong>
+          </article>
+        </section>
+
+        <section class="panel" aria-labelledby="hourly-title">
+          <div class="panel-header">
+            <div>
+              <h2 id="hourly-title">Hourly order volume</h2>
+              <p>Lunch and dinner windows should stand out against baseline demand.</p>
+            </div>
+          </div>
+          <div id="hourly-chart" class="bar-chart"></div>
+        </section>
+
+        <section id="pressure" class="two-column">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Store pressure</h2>
+                <p>Highest order-pressure ratios by store and hour.</p>
+              </div>
+            </div>
+            <div id="pressure-list" class="rank-list"></div>
+          </article>
+
+          <article id="alerts" class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Peak alerts</h2>
+                <p>Threshold crossings emitted by the detection job.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Store</th>
+                    <th>Hour</th>
+                    <th>Orders</th>
+                    <th>Ratio</th>
+                    <th>Severity</th>
+                  </tr>
+                </thead>
+                <tbody id="alert-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="products" class="two-column">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Product leaderboard</h2>
+                <p>Top sellers across the simulated business day.</p>
+              </div>
+            </div>
+            <div id="product-list" class="rank-list"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h2>Store totals</h2>
+                <p>Order distribution by store.</p>
+              </div>
+            </div>
+            <div id="store-list" class="rank-list"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

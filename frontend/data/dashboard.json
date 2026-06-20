@@ -1,0 +1,929 @@
+{
+  "summary": {
+    "total_orders": 281660,
+    "peak_orders": 200000,
+    "total_sales": 2753629300,
+    "alert_count": 16,
+    "store_count": 4
+  },
+  "hourly_orders": [
+    {
+      "hour": "00:00",
+      "orders": 1666
+    },
+    {
+      "hour": "01:00",
+      "orders": 1666
+    },
+    {
+      "hour": "02:00",
+      "orders": 1666
+    },
+    {
+      "hour": "03:00",
+      "orders": 1666
+    },
+    {
+      "hour": "04:00",
+      "orders": 1666
+    },
+    {
+      "hour": "05:00",
+      "orders": 1666
+    },
+    {
+      "hour": "06:00",
+      "orders": 1666
+    },
+    {
+      "hour": "07:00",
+      "orders": 1666
+    },
+    {
+      "hour": "08:00",
+      "orders": 5000
+    },
+    {
+      "hour": "09:00",
+      "orders": 5000
+    },
+    {
+      "hour": "10:00",
+      "orders": 5000
+    },
+    {
+      "hour": "11:00",
+      "orders": 10000
+    },
+    {
+      "hour": "12:00",
+      "orders": 50000
+    },
+    {
+      "hour": "13:00",
+      "orders": 50000
+    },
+    {
+      "hour": "14:00",
+      "orders": 5000
+    },
+    {
+      "hour": "15:00",
+      "orders": 5000
+    },
+    {
+      "hour": "16:00",
+      "orders": 5000
+    },
+    {
+      "hour": "17:00",
+      "orders": 10000
+    },
+    {
+      "hour": "18:00",
+      "orders": 50000
+    },
+    {
+      "hour": "19:00",
+      "orders": 50000
+    },
+    {
+      "hour": "20:00",
+      "orders": 10000
+    },
+    {
+      "hour": "21:00",
+      "orders": 5000
+    },
+    {
+      "hour": "22:00",
+      "orders": 1666
+    },
+    {
+      "hour": "23:00",
+      "orders": 1666
+    }
+  ],
+  "store_pressure": [
+    {
+      "store_id": "store-gangnam",
+      "hour": "00:00",
+      "orders": 607,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "01:00",
+      "orders": 612,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "02:00",
+      "orders": 612,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "03:00",
+      "orders": 615,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "04:00",
+      "orders": 574,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "05:00",
+      "orders": 621,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "06:00",
+      "orders": 627,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "07:00",
+      "orders": 561,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "08:00",
+      "orders": 1835,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "09:00",
+      "orders": 1799,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "10:00",
+      "orders": 1810,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "11:00",
+      "orders": 3559,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.84
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "12:00",
+      "orders": 18085,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.28
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "13:00",
+      "orders": 17983,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.26
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "14:00",
+      "orders": 1798,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "15:00",
+      "orders": 1784,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "16:00",
+      "orders": 1791,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "17:00",
+      "orders": 3596,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.85
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "18:00",
+      "orders": 18063,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.28
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "19:00",
+      "orders": 17812,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.22
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "20:00",
+      "orders": 3664,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.87
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "21:00",
+      "orders": 1800,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "22:00",
+      "orders": 589,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "23:00",
+      "orders": 589,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "00:00",
+      "orders": 438,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "01:00",
+      "orders": 447,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "02:00",
+      "orders": 460,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "03:00",
+      "orders": 465,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "04:00",
+      "orders": 450,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "05:00",
+      "orders": 460,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "06:00",
+      "orders": 470,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "07:00",
+      "orders": 510,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.16
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "08:00",
+      "orders": 1419,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "09:00",
+      "orders": 1402,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "10:00",
+      "orders": 1383,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "11:00",
+      "orders": 2850,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.87
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "12:00",
+      "orders": 14055,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.28
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "13:00",
+      "orders": 14032,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.27
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "14:00",
+      "orders": 1406,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "15:00",
+      "orders": 1381,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "16:00",
+      "orders": 1361,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.41
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "17:00",
+      "orders": 2756,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.84
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "18:00",
+      "orders": 14001,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.26
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "19:00",
+      "orders": 14018,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.27
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "20:00",
+      "orders": 2774,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.84
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "21:00",
+      "orders": 1366,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "22:00",
+      "orders": 500,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "23:00",
+      "orders": 475,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "00:00",
+      "orders": 358,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "01:00",
+      "orders": 335,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "02:00",
+      "orders": 346,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "03:00",
+      "orders": 331,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "04:00",
+      "orders": 366,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.16
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "05:00",
+      "orders": 316,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "06:00",
+      "orders": 327,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "07:00",
+      "orders": 317,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "08:00",
+      "orders": 989,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "09:00",
+      "orders": 1006,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "10:00",
+      "orders": 976,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "11:00",
+      "orders": 1964,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.84
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "12:00",
+      "orders": 9808,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.18
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "13:00",
+      "orders": 10112,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.31
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "14:00",
+      "orders": 1004,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "15:00",
+      "orders": 1011,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "16:00",
+      "orders": 1023,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.44
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "17:00",
+      "orders": 2001,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.85
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "18:00",
+      "orders": 9958,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.24
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "19:00",
+      "orders": 10184,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.34
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "20:00",
+      "orders": 1963,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.84
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "21:00",
+      "orders": 1014,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.43
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "22:00",
+      "orders": 312,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "23:00",
+      "orders": 335,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "00:00",
+      "orders": 263,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "01:00",
+      "orders": 272,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "02:00",
+      "orders": 248,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "03:00",
+      "orders": 255,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "04:00",
+      "orders": 276,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "05:00",
+      "orders": 269,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "06:00",
+      "orders": 242,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.13
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "07:00",
+      "orders": 278,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.15
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "08:00",
+      "orders": 757,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.4
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "09:00",
+      "orders": 793,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "10:00",
+      "orders": 831,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.44
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "11:00",
+      "orders": 1627,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.87
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "12:00",
+      "orders": 8052,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.29
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "13:00",
+      "orders": 7873,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.2
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "14:00",
+      "orders": 792,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.42
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "15:00",
+      "orders": 824,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.44
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "16:00",
+      "orders": 825,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.44
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "17:00",
+      "orders": 1647,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.88
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "18:00",
+      "orders": 7978,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.25
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "19:00",
+      "orders": 7986,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.26
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "20:00",
+      "orders": 1599,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.85
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "21:00",
+      "orders": 820,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.44
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "22:00",
+      "orders": 265,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "23:00",
+      "orders": 267,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 0.14
+    }
+  ],
+  "alerts": [
+    {
+      "store_id": "store-jamsil",
+      "hour": "19:00",
+      "orders": 10184,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.34,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-jamsil",
+      "hour": "13:00",
+      "orders": 10112,
+      "baseline_orders": 2348.17,
+      "pressure_ratio": 4.31,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "12:00",
+      "orders": 8052,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.29,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "12:00",
+      "orders": 18085,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.28,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "18:00",
+      "orders": 18063,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.28,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "12:00",
+      "orders": 14055,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.28,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "13:00",
+      "orders": 14032,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.27,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "19:00",
+      "orders": 14018,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.27,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-gangnam",
+      "hour": "13:00",
+      "orders": 17983,
+      "baseline_orders": 4224.42,
+      "pressure_ratio": 4.26,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-hongdae",
+      "hour": "18:00",
+      "orders": 14001,
+      "baseline_orders": 3286.62,
+      "pressure_ratio": 4.26,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "19:00",
+      "orders": 7986,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.26,
+      "severity": "CRITICAL"
+    },
+    {
+      "store_id": "store-yeouido",
+      "hour": "18:00",
+      "orders": 7978,
+      "baseline_orders": 1876.62,
+      "pressure_ratio": 4.25,
+      "severity": "CRITICAL"
+    }
+  ],
+  "top_products": [
+    {
+      "product_id": "americano",
+      "units_sold": 165663,
+      "gross_sales": 745483500
+    },
+    {
+      "product_id": "latte",
+      "units_sold": 124416,
+      "gross_sales": 646963200
+    },
+    {
+      "product_id": "cold_brew",
+      "units_sold": 83320,
+      "gross_sales": 466592000
+    },
+    {
+      "product_id": "bagel",
+      "units_sold": 68743,
+      "gross_sales": 261223400
+    },
+    {
+      "product_id": "sandwich",
+      "units_sold": 55611,
+      "gross_sales": 400399200
+    },
+    {
+      "product_id": "salad",
+      "units_sold": 34260,
+      "gross_sales": 232968000
+    }
+  ],
+  "store_totals": [
+    {
+      "store_id": "store-gangnam",
+      "orders": 101386
+    },
+    {
+      "store_id": "store-hongdae",
+      "orders": 78879
+    },
+    {
+      "store_id": "store-jamsil",
+      "orders": 56356
+    },
+    {
+      "store_id": "store-yeouido",
+      "orders": 45039
+    }
+  ]
+}

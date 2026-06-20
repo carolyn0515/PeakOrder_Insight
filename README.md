@@ -19,6 +19,7 @@ configs/     Environment-specific configuration
 data/        Sample data and schemas
 notebooks/   Exploration and validation notebooks
 tests/       Unit and integration tests
+frontend/    Static dashboard for peak traffic monitoring
 assets/      Diagrams, screenshots, and portfolio images
 ```
 
@@ -47,6 +48,13 @@ Use narrower targets while iterating:
 make test-python
 make test-scripts
 make test-terraform
+```
+
+Run the static dashboard locally:
+
+```bash
+python3 -m http.server 8000
+# open http://localhost:8000/frontend/
 ```
 
 ## Core Design Position
