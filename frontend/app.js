@@ -355,7 +355,18 @@ async function fetchJson(path) {
   return response.json();
 }
 
+function shouldUseLiveApi() {
+  return window.location.port === "8010" || window.location.search.includes("live=1");
+}
+
 async function loadInitialData() {
+  if (!shouldUseLiveApi()) {
+    return {
+      data: await fetchJson("./data/dashboard.json"),
+      liveApiAvailable: false,
+    };
+  }
+
   try {
     return {
       data: await fetchJson("/api/live-dashboard"),
