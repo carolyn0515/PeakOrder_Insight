@@ -34,6 +34,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 aws s3 cp "$REPO_ROOT/src/paimon/bootstrap_tables.py" "s3://$LAKEHOUSE_BUCKET/jobs/bootstrap_tables.py"
 aws s3 cp "$REPO_ROOT/src/paimon/load_order_events.py" "s3://$LAKEHOUSE_BUCKET/jobs/load_order_events.py"
+aws s3 cp "$REPO_ROOT/src/quality/validate_order_events.py" "s3://$LAKEHOUSE_BUCKET/jobs/validate_order_events.py"
 aws s3 cp "$REPO_ROOT/data/sample/order_events.jsonl" "s3://$RAW_BUCKET/orders/order_events.jsonl"
 
 echo "Uploaded Paimon job assets and sample order events."

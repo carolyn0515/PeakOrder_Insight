@@ -4,8 +4,9 @@
 
 `dags/peakorder_paimon_pipeline.py`
 
-The DAG uploads local job assets to S3, bootstraps Apache Paimon tables on EMR
-Serverless, then loads sample raw order events into the latest-state tables.
+The DAG uploads local job assets to S3, validates raw order event quality on EMR
+Serverless, bootstraps Apache Paimon tables, then loads sample raw order events
+into the latest-state tables.
 
 ## Runtime Dependencies
 
@@ -41,6 +42,7 @@ export PAIMON_SPARK_PACKAGE=org.apache.paimon:paimon-spark-3.5:1.0.1
 
 ```text
 upload_assets
+  -> validate_order_events
   -> bootstrap_tables
   -> load_order_events
 ```

@@ -28,6 +28,7 @@ PAIMON_SPARK_PACKAGE = os.getenv("PAIMON_SPARK_PACKAGE", "org.apache.paimon:paim
 JOB_PREFIX = f"{PROJECT_NAME}-{ENVIRONMENT}"
 BOOTSTRAP_SCRIPT_KEY = "jobs/bootstrap_tables.py"
 LOAD_EVENTS_SCRIPT_KEY = "jobs/load_order_events.py"
+VALIDATE_EVENTS_SCRIPT_KEY = "jobs/validate_order_events.py"
 SAMPLE_EVENTS_KEY = "orders/order_events.jsonl"
 
 
@@ -128,6 +129,11 @@ def peakorder_paimon_pipeline():
             LOAD_EVENTS_SCRIPT_KEY,
             REPO_ROOT / "src/paimon/load_order_events.py",
         )
+        validate_events_uri = upload_file(
+            LAKEHOUSE_BUCKET,
+            VALIDATE_EVENTS_SCRIPT_KEY,
+            REPO_ROOT / "src/quality/validate_order_events.py",
+        )
         raw_events_uri = upload_file(
             RAW_BUCKET,
             SAMPLE_EVENTS_KEY,
@@ -137,11 +143,21 @@ def peakorder_paimon_pipeline():
         return {
             "bootstrap_uri": bootstrap_uri,
             "load_events_uri": load_events_uri,
+            "validate_events_uri": validate_events_uri,
             "raw_events_uri": raw_events_uri,
         }
 
     @task
-    def bootstrap_tables(assets: dict[str, str]) -> str:
+    def validate_order_events(assets: dict[str, str]) -> str:
+        job_run_id = submit_spark_job(
+            job_name=f"{JOB_PREFIX}-validate-order-events",
+            entry_point=assets["validate_events_uri"],
+            arguments=["--input", assets["raw_events_uri"], "--max-error-ratio", "0.0"],
+        )
+        return wait_for_job(job_run_id)
+
+    @task
+    def bootstrap_tables(assets: dict[str, str], _: str) -> str:
         job_run_id = submit_spark_job(
             job_name=f"{JOB_PREFIX}-bootstrap-paimon",
             entry_point=assets["bootstrap_uri"],
@@ -166,7 +182,8 @@ def peakorder_paimon_pipeline():
         return wait_for_job(job_run_id)
 
     uploaded_assets = upload_assets()
-    bootstrap_state = bootstrap_tables(uploaded_assets)
+    validation_state = validate_order_events(uploaded_assets)
+    bootstrap_state = bootstrap_tables(uploaded_assets, validation_state)
     load_order_events(uploaded_assets, bootstrap_state)
 
 
