@@ -31,7 +31,11 @@ infra/scripts/upload_job_assets.sh \
 
 ## 3. Bootstrap Tables
 
+For private subnets without Maven Central access, upload the Paimon runtime jar
+to S3 first and pass it through `PAIMON_SPARK_JAR_URI`.
+
 ```bash
+PAIMON_SPARK_JAR_URI=s3://YOUR_LAKEHOUSE_BUCKET/jars/paimon-spark-3.5-1.0.1.jar \
 infra/scripts/submit_emr_serverless_job.sh \
   --application-id YOUR_APPLICATION_ID \
   --execution-role-arn YOUR_PIPELINE_ROLE_ARN \
@@ -44,6 +48,7 @@ infra/scripts/submit_emr_serverless_job.sh \
 ## 4. Load Raw Order Events
 
 ```bash
+PAIMON_SPARK_JAR_URI=s3://YOUR_LAKEHOUSE_BUCKET/jars/paimon-spark-3.5-1.0.1.jar \
 infra/scripts/submit_emr_serverless_job.sh \
   --application-id YOUR_APPLICATION_ID \
   --execution-role-arn YOUR_PIPELINE_ROLE_ARN \
@@ -54,7 +59,20 @@ infra/scripts/submit_emr_serverless_job.sh \
   --input s3://YOUR_RAW_BUCKET/orders/
 ```
 
-## 5. Materialize Lakehouse Evidence Without Paimon Runtime
+## 5. Detect Peak Pressure In Paimon
+
+```bash
+PAIMON_SPARK_JAR_URI=s3://YOUR_LAKEHOUSE_BUCKET/jars/paimon-spark-3.5-1.0.1.jar \
+infra/scripts/submit_emr_serverless_job.sh \
+  --application-id YOUR_APPLICATION_ID \
+  --execution-role-arn YOUR_PIPELINE_ROLE_ARN \
+  --job-name detect-peak-pressure \
+  --entry-point s3://YOUR_LAKEHOUSE_BUCKET/jobs/detect_peak_pressure.py \
+  --warehouse s3://YOUR_LAKEHOUSE_BUCKET/paimon \
+  --database peakorder_insight_dev
+```
+
+## 6. Materialize Lakehouse Evidence Without Paimon Runtime
 
 If the EMR job cannot download the Paimon runtime package from Maven because
 the application runs in private subnets, use the dependency-light Spark job

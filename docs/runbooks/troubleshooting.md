@@ -205,3 +205,18 @@ Observed evidence:
 - `materialize-lakehouse-views-small-executor` completed successfully and
   produced `281660` raw event rows, `399846` item rows, `96` hourly pressure
   rows, and `16` peak alert rows.
+- `paimon-spark-3.5-1.0.1.jar` was uploaded to
+  `s3://peakorder-insight-dev-lakehouse-87d26f49/jars/`.
+- `bootstrap-paimon-simple-ddl-s3-jar`, `load-order-events-paimon-s3-jar`, and
+  `detect-peak-pressure-paimon-s3-jar` completed successfully.
+- The Paimon warehouse now contains schema, data, manifest, and snapshot files
+  under `paimon/peakorder_insight_dev.db/`.
+
+Follow-up:
+
+- EMR Spark 3.5 rejected the portfolio's original
+  `PRIMARY KEY (...) NOT ENFORCED` DDL syntax before Paimon could parse it.
+- The demo path now uses append-compatible Paimon tables for AWS evidence.
+- If strict latest-state semantics are required, validate the exact Paimon
+  primary-key DDL supported by the target EMR Spark/Paimon version before
+  switching the load jobs back to `MERGE`.

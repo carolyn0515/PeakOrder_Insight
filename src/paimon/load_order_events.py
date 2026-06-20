@@ -47,6 +47,7 @@ def parse_args() -> argparse.Namespace:
 def create_spark(catalog: str, warehouse: str) -> SparkSession:
     return (
         SparkSession.builder.appName("peakorder-load-order-events")
+        .config("spark.sql.extensions", "org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions")
         .config(f"spark.sql.catalog.{catalog}", "org.apache.paimon.spark.SparkCatalog")
         .config(f"spark.sql.catalog.{catalog}.warehouse", warehouse)
         .getOrCreate()
@@ -149,33 +150,22 @@ def write_tables(spark: SparkSession, catalog: str, database: str, events: DataF
 
     spark.sql(
         f"""
-        MERGE INTO {namespace}.orders_latest target
-        USING orders_batch source
-        ON target.order_id = source.order_id
-        WHEN MATCHED AND source.event_time >= target.event_time THEN UPDATE SET *
-        WHEN NOT MATCHED THEN INSERT *
+        INSERT INTO {namespace}.orders_latest
+        SELECT * FROM orders_batch
         """
     )
 
     spark.sql(
         f"""
-        MERGE INTO {namespace}.order_items_latest target
-        USING order_items_batch source
-        ON target.order_id = source.order_id AND target.product_id = source.product_id
-        WHEN MATCHED AND source.event_time >= target.event_time THEN UPDATE SET *
-        WHEN NOT MATCHED THEN INSERT *
+        INSERT INTO {namespace}.order_items_latest
+        SELECT * FROM order_items_batch
         """
     )
 
     spark.sql(
         f"""
-        MERGE INTO {namespace}.product_demand_daily target
-        USING product_demand_daily_batch source
-        ON target.demand_date = source.demand_date
-          AND target.store_id = source.store_id
-          AND target.product_id = source.product_id
-        WHEN MATCHED THEN UPDATE SET *
-        WHEN NOT MATCHED THEN INSERT *
+        INSERT INTO {namespace}.product_demand_daily
+        SELECT * FROM product_demand_daily_batch
         """
     )
 

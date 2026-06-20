@@ -22,6 +22,7 @@ def parse_args() -> argparse.Namespace:
 def create_spark(catalog: str, warehouse: str) -> SparkSession:
     return (
         SparkSession.builder.appName("peakorder-paimon-bootstrap")
+        .config("spark.sql.extensions", "org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions")
         .config(f"spark.sql.catalog.{catalog}", "org.apache.paimon.spark.SparkCatalog")
         .config(f"spark.sql.catalog.{catalog}.warehouse", warehouse)
         .getOrCreate()
@@ -42,11 +43,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           order_status STRING,
           order_total DECIMAL(12, 2),
           event_time TIMESTAMP,
-          updated_at TIMESTAMP,
-          PRIMARY KEY (order_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '4',
-          'changelog-producer' = 'input'
+          updated_at TIMESTAMP
         )
         """
     )
@@ -61,11 +58,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           unit_price DECIMAL(12, 2),
           line_total DECIMAL(12, 2),
           event_time TIMESTAMP,
-          updated_at TIMESTAMP,
-          PRIMARY KEY (order_id, product_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '4',
-          'changelog-producer' = 'input'
+          updated_at TIMESTAMP
         )
         """
     )
@@ -79,11 +72,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           order_count BIGINT,
           units_sold BIGINT,
           gross_sales DECIMAL(18, 2),
-          updated_at TIMESTAMP,
-          PRIMARY KEY (demand_date, store_id, product_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '4',
-          'changelog-producer' = 'input'
+          updated_at TIMESTAMP
         )
         """
     )
@@ -97,11 +86,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           severity STRING,
           reason STRING,
           event_time TIMESTAMP,
-          detected_at TIMESTAMP,
-          PRIMARY KEY (event_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '2',
-          'changelog-producer' = 'input'
+          detected_at TIMESTAMP
         )
         """
     )
@@ -116,11 +101,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           gross_sales DECIMAL(18, 2),
           baseline_order_count DOUBLE,
           pressure_ratio DOUBLE,
-          updated_at TIMESTAMP,
-          PRIMARY KEY (hour_start, store_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '4',
-          'changelog-producer' = 'input'
+          updated_at TIMESTAMP
         )
         """
     )
@@ -136,11 +117,7 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
           pressure_ratio DOUBLE,
           severity STRING,
           reason STRING,
-          detected_at TIMESTAMP,
-          PRIMARY KEY (alert_id) NOT ENFORCED
-        ) WITH (
-          'bucket' = '2',
-          'changelog-producer' = 'input'
+          detected_at TIMESTAMP
         )
         """
     )

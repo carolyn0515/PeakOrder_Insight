@@ -22,6 +22,7 @@ def parse_args() -> argparse.Namespace:
 def create_spark(catalog: str, warehouse: str) -> SparkSession:
     return (
         SparkSession.builder.appName("peakorder-detect-peak-pressure")
+        .config("spark.sql.extensions", "org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions")
         .config(f"spark.sql.catalog.{catalog}", "org.apache.paimon.spark.SparkCatalog")
         .config(f"spark.sql.catalog.{catalog}.warehouse", warehouse)
         .getOrCreate()
@@ -93,21 +94,15 @@ def detect_peaks(spark: SparkSession, catalog: str, database: str, peak_threshol
 
     spark.sql(
         f"""
-        MERGE INTO {namespace}.store_order_pressure_hourly target
-        USING store_order_pressure_hourly_batch source
-        ON target.hour_start = source.hour_start AND target.store_id = source.store_id
-        WHEN MATCHED THEN UPDATE SET *
-        WHEN NOT MATCHED THEN INSERT *
+        INSERT INTO {namespace}.store_order_pressure_hourly
+        SELECT * FROM store_order_pressure_hourly_batch
         """
     )
 
     spark.sql(
         f"""
-        MERGE INTO {namespace}.peak_order_alerts target
-        USING peak_order_alerts_batch source
-        ON target.alert_id = source.alert_id
-        WHEN MATCHED THEN UPDATE SET *
-        WHEN NOT MATCHED THEN INSERT *
+        INSERT INTO {namespace}.peak_order_alerts
+        SELECT * FROM peak_order_alerts_batch
         """
     )
 

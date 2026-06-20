@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
 def create_spark(catalog: str, warehouse: str) -> SparkSession:
     return (
         SparkSession.builder.appName("peakorder-export-dashboard-views")
+        .config("spark.sql.extensions", "org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions")
         .config(f"spark.sql.catalog.{catalog}", "org.apache.paimon.spark.SparkCatalog")
         .config(f"spark.sql.catalog.{catalog}.warehouse", warehouse)
         .getOrCreate()
