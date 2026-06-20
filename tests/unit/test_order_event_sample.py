@@ -24,9 +24,16 @@ def test_sample_order_events_match_schema() -> None:
         assert not errors, f"record {index} failed schema validation: {errors}"
 
 
-def test_sample_order_events_include_late_status_update() -> None:
+def test_sample_order_events_include_peak_traffic_shape() -> None:
     records = [json.loads(line) for line in SAMPLE_PATH.read_text().splitlines() if line.strip()]
-    order_ids = [record["order_id"] for record in records]
+    hourly_counts: dict[int, int] = {}
 
-    assert order_ids.count("ord-1001") == 2
-    assert {record["event_type"] for record in records if record["order_id"] == "ord-1001"} == {"CREATED", "PAID"}
+    for record in records:
+        hour = int(record["event_time"][11:13])
+        hourly_counts[hour] = hourly_counts.get(hour, 0) + 1
+
+    normal_hour_count = hourly_counts[10]
+    assert hourly_counts[12] >= normal_hour_count * 5
+    assert hourly_counts[13] >= normal_hour_count * 5
+    assert hourly_counts[18] >= normal_hour_count * 5
+    assert hourly_counts[19] >= normal_hour_count * 5

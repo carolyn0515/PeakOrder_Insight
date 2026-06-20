@@ -106,6 +106,45 @@ def bootstrap_tables(spark: SparkSession, catalog: str, database: str) -> None:
         """
     )
 
+    spark.sql(
+        f"""
+        CREATE TABLE IF NOT EXISTS {namespace}.store_order_pressure_hourly (
+          hour_start TIMESTAMP,
+          store_id STRING,
+          order_count BIGINT,
+          units_sold BIGINT,
+          gross_sales DECIMAL(18, 2),
+          baseline_order_count DOUBLE,
+          pressure_ratio DOUBLE,
+          updated_at TIMESTAMP,
+          PRIMARY KEY (hour_start, store_id) NOT ENFORCED
+        ) WITH (
+          'bucket' = '4',
+          'changelog-producer' = 'input'
+        )
+        """
+    )
+
+    spark.sql(
+        f"""
+        CREATE TABLE IF NOT EXISTS {namespace}.peak_order_alerts (
+          alert_id STRING,
+          store_id STRING,
+          hour_start TIMESTAMP,
+          order_count BIGINT,
+          baseline_order_count DOUBLE,
+          pressure_ratio DOUBLE,
+          severity STRING,
+          reason STRING,
+          detected_at TIMESTAMP,
+          PRIMARY KEY (alert_id) NOT ENFORCED
+        ) WITH (
+          'bucket' = '2',
+          'changelog-producer' = 'input'
+        )
+        """
+    )
+
 
 def main() -> None:
     args = parse_args()

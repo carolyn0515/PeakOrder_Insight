@@ -45,6 +45,7 @@ upload_assets
   -> validate_order_events
   -> bootstrap_tables
   -> load_order_events
+  -> detect_peak_pressure
   -> export_dashboard_views
 ```
 

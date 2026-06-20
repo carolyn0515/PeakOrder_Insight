@@ -7,7 +7,7 @@ test: test-python test-scripts test-terraform
 
 test-python:
 	$(PYTHON) -m pytest tests/unit
-	$(PYTHON) -c 'from pathlib import Path; paths=[Path("dags/peakorder_paimon_pipeline.py"), Path("src/quality/validate_order_events.py"), Path("src/paimon/bootstrap_tables.py"), Path("src/paimon/load_order_events.py"), Path("src/serving/export_dashboard_views.py")]; [compile(p.read_text(), str(p), "exec") for p in paths]; print("python compile ok")'
+	$(PYTHON) -c 'from pathlib import Path; paths=[Path("dags/peakorder_paimon_pipeline.py"), Path("src/quality/validate_order_events.py"), Path("src/paimon/bootstrap_tables.py"), Path("src/paimon/load_order_events.py"), Path("src/paimon/detect_peak_pressure.py"), Path("src/serving/export_dashboard_views.py"), Path("src/ingestion/generate_peak_order_events.py")]; [compile(p.read_text(), str(p), "exec") for p in paths]; print("python compile ok")'
 
 test-scripts:
 	bash -n infra/scripts/upload_job_assets.sh

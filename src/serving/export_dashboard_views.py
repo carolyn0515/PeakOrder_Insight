@@ -31,6 +31,8 @@ def export_views(spark: SparkSession, catalog: str, database: str, output: str) 
 
     daily_demand = spark.table(f"{namespace}.product_demand_daily")
     orders = spark.table(f"{namespace}.orders_latest")
+    pressure = spark.table(f"{namespace}.store_order_pressure_hourly")
+    alerts = spark.table(f"{namespace}.peak_order_alerts")
 
     product_leaderboard = (
         daily_demand.groupBy("demand_date", "product_id")
@@ -65,13 +67,20 @@ def export_views(spark: SparkSession, catalog: str, database: str, output: str) 
         .orderBy(F.col("order_count").desc())
     )
 
+    peak_pressure = pressure.orderBy(F.col("hour_start").desc(), F.col("pressure_ratio").desc())
+    peak_alerts = alerts.orderBy(F.col("hour_start").desc(), F.col("pressure_ratio").desc())
+
     product_leaderboard.coalesce(1).write.mode("overwrite").json(f"{output}/product_leaderboard")
     store_daily_summary.coalesce(1).write.mode("overwrite").json(f"{output}/store_daily_summary")
     order_status_summary.coalesce(1).write.mode("overwrite").json(f"{output}/order_status_summary")
+    peak_pressure.coalesce(1).write.mode("overwrite").json(f"{output}/peak_pressure")
+    peak_alerts.coalesce(1).write.mode("overwrite").json(f"{output}/peak_alerts")
 
     product_leaderboard.write.mode("overwrite").parquet(f"{output}/parquet/product_leaderboard")
     store_daily_summary.write.mode("overwrite").parquet(f"{output}/parquet/store_daily_summary")
     order_status_summary.write.mode("overwrite").parquet(f"{output}/parquet/order_status_summary")
+    peak_pressure.write.mode("overwrite").parquet(f"{output}/parquet/peak_pressure")
+    peak_alerts.write.mode("overwrite").parquet(f"{output}/parquet/peak_alerts")
 
 
 def main() -> None:

@@ -29,8 +29,11 @@ JOB_PREFIX = f"{PROJECT_NAME}-{ENVIRONMENT}"
 BOOTSTRAP_SCRIPT_KEY = "jobs/bootstrap_tables.py"
 LOAD_EVENTS_SCRIPT_KEY = "jobs/load_order_events.py"
 VALIDATE_EVENTS_SCRIPT_KEY = "jobs/validate_order_events.py"
+PEAK_DETECTION_SCRIPT_KEY = "jobs/detect_peak_pressure.py"
 EXPORT_DASHBOARD_SCRIPT_KEY = "jobs/export_dashboard_views.py"
 SAMPLE_EVENTS_KEY = "orders/order_events.jsonl"
+PEAK_PRESSURE_THRESHOLD = os.getenv("PEAK_PRESSURE_THRESHOLD", "2.5")
+PEAK_MIN_ORDERS = os.getenv("PEAK_MIN_ORDERS", "20")
 DASHBOARD_EXPORT_PREFIX = os.getenv("DASHBOARD_EXPORT_PREFIX", f"s3://{LAKEHOUSE_BUCKET}/exports/dashboard")
 
 
@@ -136,6 +139,16 @@ def peakorder_paimon_pipeline():
             VALIDATE_EVENTS_SCRIPT_KEY,
             REPO_ROOT / "src/quality/validate_order_events.py",
         )
+        peak_detection_uri = upload_file(
+            LAKEHOUSE_BUCKET,
+            PEAK_DETECTION_SCRIPT_KEY,
+            REPO_ROOT / "src/paimon/detect_peak_pressure.py",
+        )
+        export_dashboard_uri = upload_file(
+            LAKEHOUSE_BUCKET,
+            EXPORT_DASHBOARD_SCRIPT_KEY,
+            REPO_ROOT / "src/serving/export_dashboard_views.py",
+        )
         raw_events_uri = upload_file(
             RAW_BUCKET,
             SAMPLE_EVENTS_KEY,
@@ -146,6 +159,7 @@ def peakorder_paimon_pipeline():
             "bootstrap_uri": bootstrap_uri,
             "load_events_uri": load_events_uri,
             "validate_events_uri": validate_events_uri,
+            "peak_detection_uri": peak_detection_uri,
             "export_dashboard_uri": export_dashboard_uri,
             "raw_events_uri": raw_events_uri,
         }
@@ -184,6 +198,23 @@ def peakorder_paimon_pipeline():
         )
         return wait_for_job(job_run_id)
 
+    @task
+    def detect_peak_pressure(assets: dict[str, str], _: str) -> str:
+        job_run_id = submit_spark_job(
+            job_name=f"{JOB_PREFIX}-detect-peak-pressure",
+            entry_point=assets["peak_detection_uri"],
+            arguments=[
+                "--warehouse",
+                PAIMON_WAREHOUSE,
+                "--database",
+                GLUE_DATABASE,
+                "--peak-threshold",
+                PEAK_PRESSURE_THRESHOLD,
+                "--min-orders",
+                PEAK_MIN_ORDERS,
+            ],
+        )
+        return wait_for_job(job_run_id)
 
     @task
     def export_dashboard_views(assets: dict[str, str], _: str) -> str:
@@ -205,7 +236,8 @@ def peakorder_paimon_pipeline():
     validation_state = validate_order_events(uploaded_assets)
     bootstrap_state = bootstrap_tables(uploaded_assets, validation_state)
     load_state = load_order_events(uploaded_assets, bootstrap_state)
-    export_dashboard_views(uploaded_assets, load_state)
+    peak_state = detect_peak_pressure(uploaded_assets, load_state)
+    export_dashboard_views(uploaded_assets, peak_state)
 
 
 peakorder_paimon_pipeline()

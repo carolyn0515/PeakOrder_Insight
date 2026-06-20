@@ -31,10 +31,18 @@ if [[ -z "$LAKEHOUSE_BUCKET" || -z "$RAW_BUCKET" ]]; then
 fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+BASE_ORDERS_PER_HOUR="${BASE_ORDERS_PER_HOUR:-1000}"
+PEAK_MULTIPLIER="${PEAK_MULTIPLIER:-8}"
+
+python3 "$REPO_ROOT/src/ingestion/generate_peak_order_events.py" \
+  --output "$REPO_ROOT/data/sample/order_events.jsonl" \
+  --base-orders-per-hour "$BASE_ORDERS_PER_HOUR" \
+  --peak-multiplier "$PEAK_MULTIPLIER"
 
 aws s3 cp "$REPO_ROOT/src/paimon/bootstrap_tables.py" "s3://$LAKEHOUSE_BUCKET/jobs/bootstrap_tables.py"
 aws s3 cp "$REPO_ROOT/src/paimon/load_order_events.py" "s3://$LAKEHOUSE_BUCKET/jobs/load_order_events.py"
 aws s3 cp "$REPO_ROOT/src/quality/validate_order_events.py" "s3://$LAKEHOUSE_BUCKET/jobs/validate_order_events.py"
+aws s3 cp "$REPO_ROOT/src/paimon/detect_peak_pressure.py" "s3://$LAKEHOUSE_BUCKET/jobs/detect_peak_pressure.py"
 aws s3 cp "$REPO_ROOT/src/serving/export_dashboard_views.py" "s3://$LAKEHOUSE_BUCKET/jobs/export_dashboard_views.py"
 aws s3 cp "$REPO_ROOT/data/sample/order_events.jsonl" "s3://$RAW_BUCKET/orders/order_events.jsonl"
 
