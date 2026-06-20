@@ -1,0 +1,3 @@
+{"event_id":"evt-1001","order_id":"ord-1001","customer_id":"cus-001","store_id":"store-gangnam","event_type":"CREATED","event_time":"2026-06-20T09:00:00Z","items":[{"product_id":"americano","quantity":2,"unit_price":4500},{"product_id":"bagel","quantity":1,"unit_price":3800}]}
+{"event_id":"evt-1002","order_id":"ord-1002","customer_id":"cus-002","store_id":"store-hongdae","event_type":"CREATED","event_time":"2026-06-20T09:03:00Z","items":[{"product_id":"latte","quantity":1,"unit_price":5200}]}
+{"event_id":"evt-1003","order_id":"ord-1001","customer_id":"cus-001","store_id":"store-gangnam","event_type":"PAID","event_time":"2026-06-20T09:05:00Z","items":[{"product_id":"americano","quantity":2,"unit_price":4500},{"product_id":"bagel","quantity":1,"unit_price":3800}]}
