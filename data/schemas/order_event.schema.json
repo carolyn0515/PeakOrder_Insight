@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OrderEvent",
+  "type": "object",
+  "required": ["event_id", "order_id", "event_type", "event_time"],
+  "properties": {
+    "event_id": { "type": "string" },
+    "order_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "store_id": { "type": "string" },
+    "event_type": { "type": "string" },
+    "event_time": { "type": "string", "format": "date-time" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["product_id", "quantity", "unit_price"],
+        "properties": {
+          "product_id": { "type": "string" },
+          "quantity": { "type": "integer", "minimum": 1 },
+          "unit_price": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

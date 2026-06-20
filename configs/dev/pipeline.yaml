@@ -1,0 +1,13 @@
+project: peakorder-insight
+environment: dev
+aws_region: ap-northeast-2
+
+storage:
+  raw_bucket: ""
+  lakehouse_bucket: ""
+  paimon_warehouse: "s3://your-lakehouse-bucket/paimon"
+
+tables:
+  orders_latest: "paimon.default.orders_latest"
+  order_items_latest: "paimon.default.order_items_latest"
+  product_demand_daily: "paimon.default.product_demand_daily"
