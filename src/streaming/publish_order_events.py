@@ -19,6 +19,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=500, help="Records per PutRecords call.")
     parser.add_argument("--sleep-ms", type=int, default=100, help="Sleep between batches in milliseconds.")
     parser.add_argument("--limit", type=int, default=0, help="Optional max number of records to publish.")
+    parser.add_argument("--max-retries", type=int, default=8, help="Retries for Kinesis PutRecords partial failures.")
+    parser.add_argument("--retry-base-ms", type=int, default=250, help="Base backoff for PutRecords retries.")
     parser.add_argument(
         "--mode",
         choices=["fixed", "peak-shaped"],
@@ -82,22 +84,66 @@ def open_progress_writer(path: str):
     return csv_file, writer
 
 
-def publish_batch(client, stream_name: str, batch: list[dict[str, object]]) -> int:
+def to_kinesis_record(record: dict[str, object]) -> dict[str, object]:
+    return {
+        "Data": json.dumps(
+            {
+                **record,
+                "_published_at_utc": timestamp_utc(),
+            },
+            separators=(",", ":"),
+        ).encode("utf-8"),
+        "PartitionKey": str(record["store_id"]),
+    }
+
+
+def publish_batch(client, stream_name: str, batch: list[dict[str, object]], max_retries: int, retry_base_ms: int) -> int:
+    pending = list(batch)
+    transient_failures = 0
+
+    for attempt in range(max_retries + 1):
+        response = client.put_records(
+            StreamName=stream_name,
+            Records=[to_kinesis_record(record) for record in pending],
+        )
+        failed_count = int(response.get("FailedRecordCount", 0))
+        if failed_count == 0:
+            return transient_failures
+
+        responses = response.get("Records", [])
+        failed_records = [
+            record
+            for record, result in zip(pending, responses, strict=True)
+            if "ErrorCode" in result
+        ]
+        transient_failures += failed_count
+
+        if attempt >= max_retries:
+            error_counts: dict[str, int] = defaultdict(int)
+            for result in responses:
+                if "ErrorCode" in result:
+                    error_counts[str(result["ErrorCode"])] += 1
+            raise RuntimeError(
+                "Kinesis PutRecords still failed after "
+                f"{max_retries} retries: failed_records={failed_count} errors={dict(error_counts)}"
+            )
+
+        sleep_seconds = (retry_base_ms / 1000) * (2**attempt)
+        print(
+            f"retrying_failed_records={failed_count} attempt={attempt + 1}/{max_retries} "
+            f"sleep_seconds={sleep_seconds:.2f}",
+            flush=True,
+        )
+        time.sleep(sleep_seconds)
+        pending = failed_records
+
+    return transient_failures
+
+
+def publish_batch_once(client, stream_name: str, batch: list[dict[str, object]]) -> int:
     response = client.put_records(
         StreamName=stream_name,
-        Records=[
-            {
-                "Data": json.dumps(
-                    {
-                        **record,
-                        "_published_at_utc": timestamp_utc(),
-                    },
-                    separators=(",", ":"),
-                ).encode("utf-8"),
-                "PartitionKey": str(record["store_id"]),
-            }
-            for record in batch
-        ],
+        Records=[to_kinesis_record(record) for record in batch],
     )
     return int(response.get("FailedRecordCount", 0))
 
@@ -154,18 +200,14 @@ def main() -> None:
                 sleep_seconds = args.simulated_hour_seconds / max(len(hour_batches), 1)
 
                 for batch in hour_batches:
-                    failed = publish_batch(client, args.stream_name, batch)
-                    if failed:
-                        raise RuntimeError(f"Kinesis PutRecords failed for {failed} records")
+                    failed = publish_batch(client, args.stream_name, batch, args.max_retries, args.retry_base_ms)
 
                     published += len(batch)
                     write_progress(writer, csv_file, started, f"{hour:02d}:00", len(batch), published, failed)
                     time.sleep(sleep_seconds)
         else:
             for batch in chunks(records, args.batch_size):
-                failed = publish_batch(client, args.stream_name, batch)
-                if failed:
-                    raise RuntimeError(f"Kinesis PutRecords failed for {failed} records")
+                failed = publish_batch(client, args.stream_name, batch, args.max_retries, args.retry_base_ms)
 
                 published += len(batch)
                 write_progress(writer, csv_file, started, "mixed", len(batch), published, failed)
