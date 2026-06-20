@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate:
+    name: Validate project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python test dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Initialize Terraform
+        run: terraform -chdir=infra/terraform/envs/dev init -backend=false
+
+      - name: Check Terraform formatting
+        run: terraform -chdir=infra/terraform/envs/dev fmt -recursive -check
+
+      - name: Validate Terraform
+        run: terraform -chdir=infra/terraform/envs/dev validate
+
+      - name: Run Python tests
+        run: make test-python
+
+      - name: Check shell scripts
+        run: make test-scripts

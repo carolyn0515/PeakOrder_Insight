@@ -22,6 +22,11 @@ tests/       Unit and integration tests
 assets/      Diagrams, screenshots, and portfolio images
 ```
 
+## Continuous Integration
+
+GitHub Actions runs Python unit tests, shell script syntax checks, Terraform
+format checks, and Terraform validation on push and pull request events.
+
 ## Local Validation
 
 Install development checks when needed:

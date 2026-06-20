@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+
+import pytest
 from pathlib import Path
 
 
@@ -9,6 +11,7 @@ DAG_PATH = REPO_ROOT / "dags/peakorder_paimon_pipeline.py"
 
 
 def test_airflow_dag_imports() -> None:
+    pytest.importorskip("airflow")
     spec = importlib.util.spec_from_file_location("peakorder_paimon_pipeline", DAG_PATH)
     assert spec is not None
     assert spec.loader is not None
